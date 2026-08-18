@@ -2,72 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: #0f1117;
-    --surface: #1a1d26;
-    --surface-2: #22263a;
-    --border: #2d3148;
-    --text-primary: #e8eaf0;
-    --text-secondary: #8b90a0;
-  }
-  body {
-    background-color: var(--background);
-    color: var(--text-primary);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  }
-}
-
-@layer components {
-  .card {
-    @apply rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6;
-  }
-  .btn-primary {
-    @apply rounded-lg bg-primary-500 px-4 py-2 font-medium text-white transition hover:bg-primary-600 active:bg-primary-700 disabled:opacity-50;
-  }
-  .btn-secondary {
-    @apply rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-4 py-2 font-medium text-[var(--text-primary)] transition hover:border-primary-500 hover:text-primary-500 disabled:opacity-50;
-  }
-  .input {
-    @apply w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-4 py-2.5 text-[var(--text-primary)] outline-none placeholder:text-[var(--text-secondary)] focus:border-primary-500 transition;
-  }
-  .select {
-    @apply w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-4 py-2.5 text-[var(--text-primary)] outline-none focus:border-primary-500 transition;
-  }
-  .streaming-text {
-    @apply prose prose-invert max-w-none;
-  }
-}
-
-/* Markdown prose styles */
-.prose-invert {
-  --tw-prose-body: #c8cad4;
-  --tw-prose-headings: #e8eaf0;
-  --tw-prose-bold: #e8eaf0;
-  --tw-prose-code: #a5b4fc;
-  --tw-prose-pre-bg: #1a1d26;
-  --tw-prose-pre-code: #c8cad4;
-  --tw-prose-links: #818cf8;
-  --tw-prose-bullets: #4f6ef7;
-  --tw-prose-hr: #2d3148;
-  --tw-prose-th-borders: #2d3148;
-  --tw-prose-td-borders: #2d3148;
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--background); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #3d4260; }
-
-/* Streaming cursor animation */
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-.streaming-cursor::after {
-  content: '▋';
-  animation: blink 1s step-end infinite;
-  color: #4f6ef7;
-  margin-left: 2px;
+body {
+  color: #0f172a;
+  background: #f8fafc;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }

@@ -1,120 +1,99 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { BookOpen, BarChart2, MessageCircle, ArrowRight, Zap, Brain, Target } from "lucide-react";
+import RequireAuth from "@/components/RequireAuth";
+import { useAuth } from "@/lib/auth";
+import { api } from "@/lib/api";
+import { StudentSummary, Concern, ROLE_LABELS } from "@/lib/types";
+import Badge from "@/components/Badge";
 
-const services = [
-  {
-    href: "/learn",
-    icon: BookOpen,
-    color: "from-blue-500/20 to-indigo-500/10",
-    iconColor: "text-blue-400",
-    borderColor: "hover:border-blue-500/50",
-    title: "Content Generator",
-    description: "Create personalized lessons, quizzes, flashcards, and summaries on any topic using Claude AI.",
-    features: ["Custom lessons by level", "Auto-generated quizzes", "Flashcard sets", "Study summaries"],
-  },
-  {
-    href: "/analyze",
-    icon: BarChart2,
-    color: "from-emerald-500/20 to-teal-500/10",
-    iconColor: "text-emerald-400",
-    borderColor: "hover:border-emerald-500/50",
-    title: "Data Analyzer",
-    description: "Ask questions about your learning data in plain English. Claude queries your SQL database and surfaces actionable insights.",
-    features: ["Natural language SQL queries", "Progress analytics", "Pattern detection", "Personalized insights"],
-  },
-  {
-    href: "/coach",
-    icon: MessageCircle,
-    color: "from-violet-500/20 to-purple-500/10",
-    iconColor: "text-violet-400",
-    borderColor: "hover:border-violet-500/50",
-    title: "Learning Coach",
-    description: "Get personalized coaching, structured learning plans, and progress analysis from an AI mentor.",
-    features: ["Conversational coaching", "Learning plan builder", "Progress reviews", "Motivation strategies"],
-  },
-];
+function DashboardContent() {
+  const { user } = useAuth();
+  const [students, setStudents] = useState<StudentSummary[]>([]);
+  const [concerns, setConcerns] = useState<Concern[]>([]);
+  const [loading, setLoading] = useState(true);
 
-const features = [
-  { icon: Zap, title: "Real-time Streaming", description: "See AI responses appear word by word for a natural, engaging experience." },
-  { icon: Brain, title: "Adaptive Thinking", description: "Claude uses extended reasoning for complex analysis and coaching decisions." },
-  { icon: Target, title: "SQL Intelligence", description: "The analyzer uses AI-driven tool use to write and execute SQL queries on your data." },
-];
+  useEffect(() => {
+    Promise.all([api.get<StudentSummary[]>("/api/students"), api.get<Concern[]>("/api/concerns")])
+      .then(([s, c]) => {
+        setStudents(s);
+        setConcerns(c);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return <p className="text-slate-500">Loading...</p>;
+
+  const openConcerns = concerns.filter((c) => c.status !== "resolved");
+  const highSeverity = openConcerns.filter((c) => c.severity === "high");
+  const atRiskStudents = students.filter((s) => s.at_risk_milestone_count > 0);
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-2xl font-semibold text-slate-900">
+          Welcome, {user?.name}
+        </h1>
+        <p className="text-sm text-slate-500">
+          Signed in as {user && ROLE_LABELS[user.role]}. You are seeing the students, concerns,
+          and milestones your role is scoped to.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <Link href="/students" className="rounded-lg border border-slate-200 bg-white p-5 hover:border-teal-300">
+          <p className="text-sm text-slate-500">Students in view</p>
+          <p className="mt-1 text-3xl font-semibold text-slate-900">{students.length}</p>
+        </Link>
+        <Link href="/concerns" className="rounded-lg border border-slate-200 bg-white p-5 hover:border-teal-300">
+          <p className="text-sm text-slate-500">Open concerns</p>
+          <p className="mt-1 text-3xl font-semibold text-slate-900">{openConcerns.length}</p>
+          {highSeverity.length > 0 && (
+            <p className="mt-1 text-xs text-rose-600">{highSeverity.length} high severity</p>
+          )}
+        </Link>
+        <Link href="/students" className="rounded-lg border border-slate-200 bg-white p-5 hover:border-teal-300">
+          <p className="text-sm text-slate-500">Students with at-risk milestones</p>
+          <p className="mt-1 text-3xl font-semibold text-slate-900">{atRiskStudents.length}</p>
+        </Link>
+      </div>
+
+      <div className="rounded-lg border border-slate-200 bg-white">
+        <div className="border-b border-slate-200 px-5 py-3">
+          <h2 className="font-medium text-slate-900">Most recent open concerns</h2>
+        </div>
+        <ul className="divide-y divide-slate-100">
+          {openConcerns.slice(0, 6).map((c) => {
+            const student = students.find((s) => s.id === c.student_id);
+            return (
+              <li key={c.id} className="flex items-center justify-between px-5 py-3 text-sm">
+                <div>
+                  <Link href={`/students/${c.student_id}`} className="font-medium text-slate-800 hover:text-teal-700">
+                    {student ? `${student.first_name} ${student.last_name}` : `Student #${c.student_id}`}
+                  </Link>
+                  <p className="text-slate-500">{c.description}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge value={c.severity} label={c.severity} />
+                  <Badge value={c.status} label={c.status.replace("_", " ")} />
+                </div>
+              </li>
+            );
+          })}
+          {openConcerns.length === 0 && (
+            <li className="px-5 py-4 text-sm text-slate-500">No open concerns in view.</li>
+          )}
+        </ul>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
-      {/* Hero */}
-      <div className="border-b border-[var(--border)] bg-gradient-to-b from-[var(--surface)] to-[var(--background)]">
-        <div className="mx-auto max-w-6xl px-6 py-20 text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary-500/30 bg-primary-500/10 px-4 py-1.5 text-sm text-primary-500">
-            <Zap size={14} /> Powered by Claude claude-opus-4-6 with Adaptive Thinking
-          </div>
-          <h1 className="mb-4 text-5xl font-bold tracking-tight text-[var(--text-primary)]">
-            Your AI Learning Platform
-          </h1>
-          <p className="mx-auto mb-8 max-w-2xl text-lg text-[var(--text-secondary)]">
-            Three specialized AI services that generate learning content, analyze your progress data,
-            and coach you toward your goals — all powered by Claude.
-          </p>
-          <div className="flex justify-center gap-3">
-            <Link href="/learn" className="btn-primary flex items-center gap-2 px-6 py-3 text-base">
-              Get Started <ArrowRight size={18} />
-            </Link>
-            <Link href="/analyze" className="btn-secondary px-6 py-3 text-base">
-              View Analytics
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      <div className="mx-auto max-w-6xl px-6 py-16">
-        {/* Services */}
-        <h2 className="mb-8 text-2xl font-bold text-[var(--text-primary)]">Choose a Service</h2>
-        <div className="mb-16 grid gap-6 md:grid-cols-3">
-          {services.map(({ href, icon: Icon, color, iconColor, borderColor, title, description, features }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`card group cursor-pointer border border-[var(--border)] bg-gradient-to-br ${color} transition-all duration-200 ${borderColor} hover:shadow-lg hover:shadow-black/20`}
-            >
-              <div className={`mb-4 inline-flex rounded-xl bg-[var(--surface)] p-3 ${iconColor}`}>
-                <Icon size={24} />
-              </div>
-              <h3 className="mb-2 text-lg font-semibold text-[var(--text-primary)]">{title}</h3>
-              <p className="mb-4 text-sm text-[var(--text-secondary)]">{description}</p>
-              <ul className="space-y-1.5">
-                {features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
-                    <span className="h-1.5 w-1.5 rounded-full bg-current" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-4 flex items-center gap-1 text-sm font-medium text-primary-500 opacity-0 transition group-hover:opacity-100">
-                Open service <ArrowRight size={14} />
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        {/* Platform features */}
-        <div className="border-t border-[var(--border)] pt-12">
-          <h2 className="mb-8 text-2xl font-bold text-[var(--text-primary)]">Platform Capabilities</h2>
-          <div className="grid gap-6 md:grid-cols-3">
-            {features.map(({ icon: Icon, title, description }) => (
-              <div key={title} className="flex gap-4">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-primary-500/10 text-primary-500">
-                  <Icon size={20} />
-                </div>
-                <div>
-                  <h3 className="mb-1 font-semibold text-[var(--text-primary)]">{title}</h3>
-                  <p className="text-sm text-[var(--text-secondary)]">{description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+    <RequireAuth>
+      <DashboardContent />
+    </RequireAuth>
   );
 }

@@ -1,15 +1,26 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AuthProvider } from "@/lib/auth";
+import Nav from "@/components/Nav";
 
 export const metadata: Metadata = {
-  title: "LLM Learning Platform",
-  description: "AI-powered platform for personalized learning, data analysis, and coaching",
+  title: "Student Data Source of Truth",
+  description: "Authoritative student data, progress, concerns, milestones, and faculty appointments.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en">
-      <body className="min-h-screen antialiased">{children}</body>
+      <body className="antialiased">
+        <AuthProvider>
+          <Nav />
+          <main className="mx-auto max-w-6xl px-6 py-8">{children}</main>
+        </AuthProvider>
+      </body>
     </html>
   );
 }

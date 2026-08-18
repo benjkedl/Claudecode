@@ -1,0 +1,134 @@
+[
+  {
+    "student_id": "S1001",
+    "first_name": "Maria",
+    "last_name": "Chen",
+    "email": "maria.chen@students.sot.edu",
+    "phone": "555-0101",
+    "dob": "2000-03-14",
+    "program": "MD Program",
+    "cohort_year": 2027,
+    "status": "active"
+  },
+  {
+    "student_id": "S1002",
+    "first_name": "James",
+    "last_name": "Okafor",
+    "email": "james.okafor@students.sot.edu",
+    "phone": "555-0102",
+    "dob": "1999-11-02",
+    "program": "MD Program",
+    "cohort_year": 2027,
+    "status": "active"
+  },
+  {
+    "student_id": "S1003",
+    "first_name": "Priya",
+    "last_name": "Natarajan",
+    "email": "priya.natarajan@students.sot.edu",
+    "phone": "555-0199",
+    "dob": "2000-06-21",
+    "program": "MD Program",
+    "cohort_year": 2027,
+    "status": "active"
+  },
+  {
+    "student_id": "S1004",
+    "first_name": "Lucas",
+    "last_name": "Bennett",
+    "email": "lucas.bennett@students.sot.edu",
+    "phone": "555-0104",
+    "dob": "2001-01-09",
+    "program": "MD Program",
+    "cohort_year": 2028,
+    "status": "active"
+  },
+  {
+    "student_id": "S1005",
+    "first_name": "Sofia",
+    "last_name": "Marin",
+    "email": "sofia.marin@students.sot.edu",
+    "phone": "555-0105",
+    "dob": "2000-09-30",
+    "program": "MD Program",
+    "cohort_year": 2028,
+    "status": "active"
+  },
+  {
+    "student_id": "S1006",
+    "first_name": "Ethan",
+    "last_name": "Wallace",
+    "email": "ethan.wallace@students.sot.edu",
+    "phone": "555-0106",
+    "dob": "2001-04-17",
+    "program": "MD Program",
+    "cohort_year": 2028,
+    "status": "active"
+  },
+  {
+    "student_id": "S1007",
+    "first_name": "Amara",
+    "last_name": "Johnson",
+    "email": "amara.johnson@students.sot.edu",
+    "phone": "555-0107",
+    "dob": "2002-02-05",
+    "program": "MD Program",
+    "cohort_year": 2029,
+    "status": "active"
+  },
+  {
+    "student_id": "S1008",
+    "first_name": "Noah",
+    "last_name": "Kim",
+    "email": "noah.kim@students.sot.edu",
+    "phone": "555-0108",
+    "dob": "1999-12-19",
+    "program": "PA Program",
+    "cohort_year": 2027,
+    "status": "active"
+  },
+  {
+    "student_id": "S1009",
+    "first_name": "Grace",
+    "last_name": "Liu",
+    "email": "grace.liu@students.sot.edu",
+    "phone": "555-0109",
+    "dob": "2000-08-08",
+    "program": "PA Program",
+    "cohort_year": 2027,
+    "status": "active"
+  },
+  {
+    "student_id": "S1010",
+    "first_name": "Daniel",
+    "last_name": "Foster",
+    "email": "daniel.foster@students.sot.edu",
+    "phone": "555-0110",
+    "dob": "1999-05-27",
+    "program": "MD Program",
+    "cohort_year": 2027,
+    "status": "withdrawn"
+  },
+  {
+    "student_id": "S1011",
+    "first_name": "Olivia",
+    "last_name": "Park",
+    "email": "olivia.park@students.sot.edu",
+    "phone": "555-0111",
+    "dob": "2001-07-12",
+    "program": "MD Program",
+    "cohort_year": 2029,
+    "status": "active"
+  },
+  {
+    "student_id": "S1012",
+    "first_name": "Marcus",
+    "last_name": "Diallo",
+    "email": "marcus.diallo@students.sot.edu",
+    "phone": "555-0112",
+    "dob": "2001-10-03",
+    "program": "PA Program",
+    "cohort_year": 2028,
+    "status": "active"
+  }
+]
